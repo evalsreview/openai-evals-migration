@@ -1,0 +1,10 @@
+{
+  "name": "openai-evals-migration",
+  "version": "0.1.0",
+  "description": "Convert an exported OpenAI hosted eval into a promptfoo config.",
+  "type": "module",
+  "license": "MIT",
+  "bin": { "openai-evals-to-promptfoo": "convert.mjs" },
+  "scripts": { "test": "node --test tests/", "example": "node convert.mjs --eval examples/sample-export/eval.json --items examples/sample-export/items.jsonl --run examples/sample-export/run.json --out examples/output" },
+  "engines": { "node": ">=18" }
+}

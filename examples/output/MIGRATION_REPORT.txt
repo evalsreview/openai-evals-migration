@@ -1,0 +1,8 @@
+tests: 3
+assertions: 5
+WARN close to reference: bleu implementation may differ numerically from OpenAI's; re-check the threshold
+WARN helpfulness: score_model range [1, 7] pass_threshold 5 rescaled to llm-rubric threshold 0.6667 (0-1)
+WARN helpfulness: score_model -> llm-rubric is an approximation; validate the judge before trusting it
+WARN tone: label_model -> llm-rubric is an approximation (pass/fail judge, not a label classifier); validate against old OpenAI results
+UNSUPPORTED fuzzy reference: text_similarity metric "fuzzy_match" has no direct promptfoo assertion (map manually)
+UNSUPPORTED custom length check: grader type "python" is not converted automatically (python, multi, endpoint and others need manual work)

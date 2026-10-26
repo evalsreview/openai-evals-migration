@@ -1,0 +1,34 @@
+{
+  "_note": "SYNTHETIC EXAMPLE DATA, made up by Evals Review to show the export shape. Not a real OpenAI eval, ID or result.",
+  "object": "eval",
+  "id": "eval_EXAMPLE000000",
+  "name": "Support ticket triage (synthetic example)",
+  "data_source_config": {
+    "type": "custom",
+    "item_schema": {
+      "type": "object",
+      "properties": {
+        "ticket": { "type": "string" },
+        "expected_label": { "type": "string" },
+        "reference_reply": { "type": "string" }
+      },
+      "required": ["ticket", "expected_label"]
+    },
+    "include_sample_schema": true
+  },
+  "testing_criteria": [
+    { "type": "string_check", "name": "label matches", "input": "{{ sample.output_text }}", "operation": "ilike", "reference": "{{ item.expected_label }}" },
+    { "type": "string_check", "name": "no apology boilerplate", "input": "{{ sample.output_text }}", "operation": "ne", "reference": "Sorry, I cannot help." },
+    { "type": "text_similarity", "name": "close to reference", "input": "{{ sample.output_text }}", "reference": "{{ item.reference_reply }}", "evaluation_metric": "bleu", "pass_threshold": 0.3 },
+    { "type": "text_similarity", "name": "fuzzy reference", "input": "{{ sample.output_text }}", "reference": "{{ item.reference_reply }}", "evaluation_metric": "fuzzy_match", "pass_threshold": 0.8 },
+    { "type": "score_model", "name": "helpfulness", "model": "gpt-4.1", "input": [
+        { "role": "system", "content": "Score how helpful the reply is to the customer from 1 to 7." },
+        { "role": "user", "content": "Ticket: {{ item.ticket }}\nReply: {{ sample.output_text }}" } ],
+      "range": [1, 7], "pass_threshold": 5 },
+    { "type": "label_model", "name": "tone", "model": "gpt-4.1", "input": [
+        { "role": "system", "content": "Classify the tone of the reply as polite, neutral or rude." },
+        { "role": "user", "content": "{{ sample.output_text }}" } ],
+      "labels": ["polite", "neutral", "rude"], "passing_labels": ["polite", "neutral"] },
+    { "type": "python", "name": "custom length check", "source": "def grade(sample, item):\n    return 1.0 if len(sample['output_text']) < 400 else 0.0" }
+  ]
+}

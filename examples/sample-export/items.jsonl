@@ -1,0 +1,3 @@
+{"item": {"ticket": "SYNTHETIC: My invoice shows two charges for October.", "expected_label": "billing", "reference_reply": "billing: we will check the duplicate October charge"}}
+{"item": {"ticket": "SYNTHETIC: The app crashes when I upload a photo.", "expected_label": "bug", "reference_reply": "bug: please share your app version so we can reproduce the crash"}}
+{"item": {"ticket": "SYNTHETIC: Can you add dark mode?", "expected_label": "feature_request", "reference_reply": "feature_request: thanks, we have logged dark mode"}}

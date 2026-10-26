@@ -1,0 +1,15 @@
+{
+  "_note": "SYNTHETIC EXAMPLE DATA. Shape of an Evals API run's data_source, made up for this example.",
+  "object": "eval.run",
+  "data_source": {
+    "type": "completions",
+    "model": "gpt-4.1-mini",
+    "input_messages": {
+      "type": "template",
+      "template": [
+        { "role": "system", "content": "Classify the support ticket as billing, bug or feature_request. Start your reply with the label, then a colon, then one short sentence to the customer." },
+        { "role": "user", "content": "{{ item.ticket }}" }
+      ]
+    }
+  }
+}

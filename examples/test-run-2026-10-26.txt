@@ -1,0 +1,45 @@
+## date: 2026-10-26T08:03:51+05:30
+## node: v20.19.2
+## promptfoo commands ran as: npx -y node@22 (v22.23.4) <global promptfoo 0.125.1 entrypoint>, because promptfoo 0.125.1 requires Node >=22.22.0 and the box has Node 20.19.2. No OPENAI_API_KEY was set.
+
+$ node --test tests/
+ok 1 - item templates become promptfoo vars
+ok 2 - string_check operations map to promptfoo assertions
+ok 3 - string_check on a non-output input is flagged unsupported
+ok 4 - text_similarity maps known metrics with threshold, flags others
+ok 5 - score_model rescales threshold into 0-1 llm-rubric
+ok 6 - python/multi graders are reported unsupported
+ok 7 - jsonl accepts wrapped and bare items
+ok 8 - convert builds config, tests and placeholder warnings without a run
+# tests 8
+# pass 8
+# fail 0
+
+$ node convert.mjs --eval examples/sample-export/eval.json --items examples/sample-export/items.jsonl --run examples/sample-export/run.json --out examples/output
+tests: 3
+assertions: 5
+WARN close to reference: bleu implementation may differ numerically from OpenAI's; re-check the threshold
+WARN helpfulness: score_model range [1, 7] pass_threshold 5 rescaled to llm-rubric threshold 0.6667 (0-1)
+WARN helpfulness: score_model -> llm-rubric is an approximation; validate the judge before trusting it
+WARN tone: label_model -> llm-rubric is an approximation (pass/fail judge, not a label classifier); validate against old OpenAI results
+UNSUPPORTED fuzzy reference: text_similarity metric "fuzzy_match" has no direct promptfoo assertion (map manually)
+UNSUPPORTED custom length check: grader type "python" is not converted automatically (python, multi, endpoint and others need manual work)
+
+$ promptfoo --version
+0.125.1
+
+$ promptfoo validate -c promptfooconfig.yaml
+Configuration is valid.
+
+## Offline smoke eval: same tests, echo provider, llm-rubric asserts removed (they need an API key).
+## The echo provider returns the prompt, so most asserts are EXPECTED to fail; this only proves promptfoo accepts and executes the assertion types.
+$ promptfoo eval -c /tmp/pf-offline.yaml --no-cache --no-write
+Cache is disabled.
+Starting evaluation eval-IMt-2026-10-26T02:33:58
+Running 3 test cases (up to 4 at a time)...
+✓ Eval complete
+Results:
+  0 passed (0%)
+  ✗ 3 failed (100%)
+  0 errors (0%)
+Duration: 0s (concurrency: 4)
